@@ -26,14 +26,7 @@ checkduplicates_to10 <- matrix(NA, nrow = length(ADN$text), ncol = length(ADN$te
 
 # --- 1.3 Pull in checkduplicates csv files from Julia ----
 
-checkduplicates_1_100 <- import('data/corpus/checkduplicates_1-100.csv', header = F) %>%
-  mutate(V3 = NA, V4 = NA)
-
-checkduplicates_101_500 <- import('data/corpus/checkduplicates_101-500.csv', header = F)
-checkduplicates_501_1423 <- import('data/corpus/checkduplicates_501-1423.csv', header = F)
-
-
-checkduplicates <- rbind.data.frame(checkduplicates_1_100, checkduplicates_101_500, checkduplicates_501_1423) %>%
+checkduplicates <- import('data/corpus/checkduplicates.csv', header = F) %>%
   select(-V1) %>%
   filter(!is.na(V3)) %>%
   group_by(V2, V3, V4) %>%
