@@ -1,11 +1,9 @@
-# sesync_workshop
+# Sea Ice Reporting
 
-#Sea Ice Stories
+# July 2022
 
-#July 2021
 
-#team members Abby, Sam, Masha, Kitrea
+This project seeks to analyze how sea ice is discussed and framed in Alaskan news reporting (specifically looking within the Alaska Dispatch News). It utilizes a corpus-based approach to identify collocations, co-occurrences, LDA topic models, and relevant derived metrics from these analyses. 
 
-#This project seeks to analyze how sea ice-related anomalous events are reflected in newspaper narratives, and for how long. 
-
+For more information on this project, please contact kelly.claborn@asu.edu.
 
