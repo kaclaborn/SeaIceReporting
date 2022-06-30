@@ -17,17 +17,14 @@
 pacman::p_load(rio, dplyr, tidyr, wordcloud2, htmlwidgets, webshot, ggthemes, grid, gridExtra, ggplot2)
 
 source("code/metadataExtract.R")
-source("code/plotThemes.R")
+source("code/functions/plotThemes.R")
 
+
+# Can replace with your own output, dated by when you ran the topic model analysis
 input.dir <- "data/outputs/topicmodel/20220409/"
 
 
-# ---- NOTE: Have decided to only run the topic modelling function a single time across the full corpus ----
-# Instead, we simply disaggregate by time period when looking at posterior probabilities.  
-# This way, we can compare the same topics through time.
-
-
-# ---- 1.1 Import topic model outputs for full corpus (1995-2021) ----
+# ---- 1.2 Import topic model outputs for full corpus (1995-2021) ----
 
 top5_full <- import(paste(input.dir, 'top5_full.csv', sep = ''))
 

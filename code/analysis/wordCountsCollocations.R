@@ -15,7 +15,7 @@
 # ---- 1.1 Source metadataExtract.R ----
 
 source('code/metadataExtract.R')
-source('code/plotThemes.R')
+source('code/functions/plotThemes.R')
 
 
 # ---- 1.2 Tokenize corpus ----
