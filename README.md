@@ -2,7 +2,7 @@
 
 ### Introduction
 
-This project seeks to analyze how sea ice is discussed and framed in Alaskan news reporting (specifically looking within the Alaska Dispatch News). It utilizes a corpus-based approach to identify collocations, co-occurrences, LDA topic models, and relevant derived metrics from these analyses. 
+This project seeks to analyze how sea ice is discussed and framed in Alaskan news reporting (specifically looking within the Alaska Dispatch News). It utilizes a corpus-based approach to identify collocations, co-occurrences, LDA topic models, and relevant derived metrics from these analyses. Many of the quantitative methods follow the tutorial written by Andreas Niekley and Gregor Wiedemann at https://tm4ss.github.io/docs/index.html.
 
 For more information on this project, please contact Kelly Claborn at kelly.claborn@asu.edu.
 

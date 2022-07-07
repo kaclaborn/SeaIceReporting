@@ -74,15 +74,15 @@ ADN_ndocs_byperiod <- ADN %>%
 num_docs_plot <- 
   ggplot(ADN, aes(x = year)) +
   geom_histogram(stat = "count", fill = "#332288") +
-  geom_text(aes(x = 13, y = 111, label = "*")) +
-  geom_text(aes(x = 18, y = 102, label = "*")) +
-  geom_text(aes(x = 21, y = 158, label = "*")) +
+  geom_text(aes(x = 13, y = 111, label = "*"), size = 8) +
+  geom_text(aes(x = 18, y = 102, label = "*"), size = 8) +
+  geom_text(aes(x = 21, y = 158, label = "*"), size = 8) +
   scale_x_discrete(name = "",
                    breaks = seq(1995, 2021, by = 3)) +
   scale_y_continuous(name = "", 
                      expand = c(0,0),
                      limits = c(0, 166)) +
-  labs(title = "Number documents containing 'sea ice', per year",
+  labs(title = "Number Documents Containing 'Sea Ice'",
        subtitle = "Alaska Dispatch News") +
   seaice.plot.theme
 
@@ -90,7 +90,8 @@ num_docs_plot_arranged <-
   grid.arrange(num_docs_plot, 
                bottom = grid.text(label = "*Year of record-breaking loss in sea ice extent",
                                   x = unit(45, "pt"),
-                                  just = "left"))
+                                  just = "left",
+                                  gp = gpar(fontsize = 14, lineheight = 1, col = "#303030")))
 
 num_docs_peryear <- ADN %>% group_by(year) %>% summarise(n = length(docid))
 
@@ -105,7 +106,7 @@ num_docs_byperiod_plot <-
   scale_x_discrete(name = "") +
   scale_y_continuous(name = "", 
                      expand = c(0,0)) +
-  labs(title = "Number documents containing 'sea ice', per 3-year period",
+  labs(title = "Number Documents Containing 'Sea Ice', per 3-year period",
        subtitle = "Alaska Dispatch News") +
   seaice.plot.theme +
   theme(axis.text.x = element_text(angle = 330, 
@@ -156,8 +157,14 @@ seaice_trigrams <-
   group_by(collocation) %>%
   summarise(value = sum(count, na.rm = TRUE)) %>%
   arrange(desc(value))
-  
+
+# export(ADN_bigrams, "data/outputs/bigram_counts.csv")
+# export(ADN_trigrams, "data/outputs/trigram_counts.csv")
+# export(seaice_trigrams, "data/outputs/seaice_trigram_counts.csv")
+
+
 # Look for sea ice trigrams with lower threshold for inclusion (minimum count of 10, instead of 25)
+# --- This is exploratory, to get a sense of any synonyms that may appear (e.g., synonym to "sea ice melt") but in less frequency
 ADN_trigrams_min10 <- textstat_collocations(ADNcorpus_tokens, size = 3, min_count = 10)
 
 seaice_trigrams_min10 <-
@@ -372,11 +379,11 @@ plot_bigrams_byyear <-
   geom_vline(aes(xintercept = 3.5), linetype = 1, color = "#C0C0C0", size = 0.35) +
   geom_vline(aes(xintercept = 6.5), linetype = 1, color = "#C0C0C0", size = 0.35) +
   geom_text(aes(x = 2.25, y = 4.35, label = "1995 - 2003"),
-            color = "#909090", size = 2.5) +
+            color = "#909090", size = 4.5) +
   geom_text(aes(x = 5, y = 4.35, label = "2004 - 2012"),
-            color = "#909090", size = 2.5) +
+            color = "#909090", size = 4.5) +
   geom_text(aes(x = 7.75, y = 4.35, label = "2013 - 2021"),
-            color = "#909090", size = 2.5) +
+            color = "#909090", size = 4.5) +
   geom_line(aes(x = period, y = value_scaled, 
                 group = collocation, color = collocation),
             size = 1.5) +
@@ -386,11 +393,11 @@ plot_bigrams_byyear <-
                      limits = c(0, 4.5)) +
   scale_x_discrete(name = "",
                    expand = c(0,0)) +
-  seaice.plot.theme +
+  seaice.plot.theme + seaice.legend.guide +
   theme(axis.text.x = element_text(angle = 330, 
                                    vjust = 1,
                                    hjust = 0)) +
-  labs(title = "Most Frequent Bigrams", subtitle = "Relative frequency per time period (count per # of documents)")
+  labs(title = "Top 6 Collocations")
 
 
 # ---- 4.2 Plot "sea ice" trigrams by 3-year period ----
@@ -400,11 +407,11 @@ plot_seaice_trigrams_byyear <-
   geom_vline(aes(xintercept = 3.5), linetype = 1, color = "#C0C0C0", size = 0.35) +
   geom_vline(aes(xintercept = 6.5), linetype = 1, color = "#C0C0C0", size = 0.35) +
   geom_text(aes(x = 2.25, y = 0.34, label = "1995 - 2003"),
-            color = "#909090", size = 2.5) +
+            color = "#909090", size = 4.5) +
   geom_text(aes(x = 5, y = 0.34, label = "2004 - 2012"),
-            color = "#909090", size = 2.5) +
+            color = "#909090", size = 4.5) +
   geom_text(aes(x = 7.75, y = 0.34, label = "2013 - 2021"),
-            color = "#909090", size = 2.5) +
+            color = "#909090", size = 4.5) +
   geom_line(aes(x = period, y = value_scaled, 
                 group = collocation, color = collocation),
             size = 1.5) +
@@ -414,14 +421,28 @@ plot_seaice_trigrams_byyear <-
                      limits = c(0, 0.35)) +
   scale_x_discrete(name = "",
                    expand = c(0,0)) +
-  seaice.plot.theme +
+  seaice.plot.theme + seaice.legend.guide + 
   theme(axis.text.x = element_text(angle = 330, 
                                    vjust = 1,
                                    hjust = 0)) +
-  labs(title = "Top 10 Words Collocated with 'Sea Ice'", subtitle = "Relative frequency per time period (count per # of documents)")
+  labs(title = "Top 10 Collocations with 'Sea Ice'")
   
 
-# ---- 4.3 Plot "ice"-only bigrams by 3-year period ----
+# ---- 4.3 Arrange bigrams and sea ice trigrams into a single, 2-panel figure ----
+
+bigrams_trigrams_arranged <-
+  grid.arrange(plot_bigrams_byyear,
+               grid.text(label = ""),
+               plot_seaice_trigrams_byyear, 
+               ncol = 3,
+               widths = unit(c(1.05, 0.1, 1), "null"),
+               bottom = grid.text(label = "Units: Both figures measure relative frequency per time period (count per # of documents).",
+                                  x = unit(270, "pt"),
+                                  just = "left",
+                                  gp = gpar(fontsize = 14, lineheight = 1, col = "#303030")))
+
+
+# ---- 4.4 Plot "ice"-only bigrams by 3-year period ----
 
 plot_ice_bigrams_byyear <- 
   ggplot(data = top10_ice_bigrams_byperiod) +
@@ -455,6 +476,13 @@ png("data/outputs/Seaice_trigrams_peryearperiod.png",
 grid.newpage()
 grid.draw(plot_seaice_trigrams_byyear)
 dev.off()
+
+png("data/outputs/Bigrams_trigrams_2panel.png",
+    units = "in", height = 6, width = 16, res = 400)
+grid.newpage()
+grid.draw(bigrams_trigrams_arranged)
+dev.off()
+
 
 png("data/outputs/Ice_bigrams_peryearperiod.png",
     units = "in", height = 6, width = 8, res = 400)

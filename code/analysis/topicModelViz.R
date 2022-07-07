@@ -134,7 +134,7 @@ plot_topics_byperiod <-
                      limits = rev(levels(Probs_byYear_toPlot$period))) +
     scale_fill_ptol(name = "") +
     labs(title = "Topic Probabilities", subtitle = "Posterior probabilities per time period") +
-    seaice.plot.theme + coord_flip()  + guides(fill = guide_legend(reverse = T)) +
+    seaice.plot.theme + coord_flip()  + seaice.legend.guide +
     theme(panel.grid.major.x = element_line(colour = "#C0C0C0",
                                             linetype = 3,
                                             size = 0.5),
@@ -313,25 +313,25 @@ Ndocs_pertopic_plot <-
   ggplot(Ndocs_pertopic %>% arrange(ndocs_33perc) %>%
            mutate(name = factor(name, levels = unique(name), ordered = T))) +
   geom_text(aes(y = 10.4, x = Ndocs_pertopic$ndocs_66perc[Ndocs_pertopic$name=="Scientific Perspectives"],
-                 label = "33%")) +
+                 label = "33%"), size = 4.5) +
   geom_text(aes(y = 10.4, x = (Ndocs_pertopic$ndocs_33perc[Ndocs_pertopic$name=="Scientific Perspectives"] +
                   Ndocs_pertopic$ndocs_66perc[Ndocs_pertopic$name=="Scientific Perspectives"])/2,
-                label = "probability of occurrence")) +
+                label = "probability of occurrence"), size = 4.5) +
   geom_text(aes(y = 10.4, x = Ndocs_pertopic$ndocs_33perc[Ndocs_pertopic$name=="Scientific Perspectives"],
-                label = "66%")) +
+                label = "66%"), size = 4.5) +
   geom_point(aes(y = name, x = ndocs_33perc),
-             shape = 16, size = 2, colour = "#332288") +
+             shape = 16, size = 3.5, colour = "#332288") +
   geom_point(aes(y = name, x = ndocs_66perc),
-             shape = 16, size = 2, colour = "#332288") +
+             shape = 16, size = 3.5, colour = "#332288") +
   geom_linerange(aes(y = name, xmin = ndocs_66perc, xmax = ndocs_33perc), 
-           stat = "identity", size = 1, colour = "#332288") +
+           stat = "identity", size = 1.5, colour = "#332288") +
   scale_y_discrete(name = "",
                    expand = c(0.1, 0)) +
-  scale_x_continuous(name = "# documents",
+  scale_x_continuous(name = "",
                      expand = c(0, 0),
                      limits = c(-5, 200)) +
   seaice.plot.theme + labs(title = "Prevalence and Cohesiveness of Topics", 
-                           subtitle = "Number of documents with at least 66% and 33% probability of occurrence per topic") +
+                           subtitle = "Number documents by probability of occurrence") +
   theme(panel.grid.major.x = element_line(colour = "#C0C0C0",
                                           linetype = 3,
                                           size = 0.5),
@@ -378,3 +378,23 @@ dev.off()
 #                                           linetype = 3,
 #                                           size = 0.5),
 #         panel.grid.major.y = element_blank())
+
+
+# ---- 4.4 Arrange topic probailities by time period and prevalence/cohesiveness into single 2-panel figure ----
+
+topicProbs_prevalence_arranged <-
+  grid.arrange(plot_topics_byperiod,
+               grid.text(label = ""),
+               grid.arrange(grid.text(label = ""), 
+                           Ndocs_pertopic_plot,
+                           ncol = 2,
+                           widths = unit(c(0.15, 1), unit = "null")), 
+               nrow = 3,
+               heights = unit(c(1, 0.1, 1), unit = "null"))
+
+# EXPORT
+png("data/outputs/topicmodel/20220409/TopicProbs_Prevalence_2panel.png",
+    units = "in", height = 12, width = 12, res = 400)
+grid.newpage()
+grid.draw(topicProbs_prevalence_arranged)
+dev.off()
