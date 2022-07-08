@@ -313,12 +313,12 @@ Ndocs_pertopic_plot <-
   ggplot(Ndocs_pertopic %>% arrange(ndocs_33perc) %>%
            mutate(name = factor(name, levels = unique(name), ordered = T))) +
   geom_text(aes(y = 10.4, x = Ndocs_pertopic$ndocs_66perc[Ndocs_pertopic$name=="Scientific Perspectives"],
-                 label = "33%"), size = 4.5) +
+                 label = "66%"), size = 4.5) +
   geom_text(aes(y = 10.4, x = (Ndocs_pertopic$ndocs_33perc[Ndocs_pertopic$name=="Scientific Perspectives"] +
                   Ndocs_pertopic$ndocs_66perc[Ndocs_pertopic$name=="Scientific Perspectives"])/2,
                 label = "probability of occurrence"), size = 4.5) +
   geom_text(aes(y = 10.4, x = Ndocs_pertopic$ndocs_33perc[Ndocs_pertopic$name=="Scientific Perspectives"],
-                label = "66%"), size = 4.5) +
+                label = "33%"), size = 4.5) +
   geom_point(aes(y = name, x = ndocs_33perc),
              shape = 16, size = 3.5, colour = "#332288") +
   geom_point(aes(y = name, x = ndocs_66perc),
